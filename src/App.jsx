@@ -133,6 +133,7 @@ export default function App() {
             <a href="#about">About</a>
             <a href="#team">Team</a>
             <a href="#contact">Contact</a>
+            <a href="#faq">FAQ</a>
           </nav>
         </div>
       </header>
@@ -276,6 +277,7 @@ export default function App() {
         <div className="steps">
           <div className="step">
             <span className="step-num">01</span>
+            <h3>Capture</h3> 
             <h3>Capture</h3>
             <p>Photograph a leaf in natural light — any crop, any season, any handheld camera.</p>
           </div>
@@ -306,6 +308,7 @@ export default function App() {
           <span className="stat-label">average scan time</span>
         </div>
       </section>
+
       <section className="team" id="team">
         <h2>Team</h2>
         <div className="team-grid">
@@ -319,6 +322,36 @@ export default function App() {
             <h3>Samuel Kibaara</h3>
             <p className="team-role">Co-Founder</p>
           </div>
+        </div>
+      </section>
+
+      <section className="faq" id="faq">
+        <h2>FAQ</h2>
+        <div className="faq-list">
+          <details className="faq-item">
+            <summary>Is FarmVision AI free to use?</summary>
+            <p>Yes, scanning a leaf photo is free. We may introduce optional paid plans for heavy or commercial use in the future.</p>
+          </details>
+          <details className="faq-item">
+            <summary>How accurate is the diagnosis?</summary>
+            <p>FarmVision AI gives a strong AI-based reading of your photo, not a certified lab diagnosis. For high-stakes decisions, we recommend confirming with a licensed agronomist.</p>
+          </details>
+          <details className="faq-item">
+            <summary>Which crops does it support?</summary>
+            <p>The scanner works on most common crop leaves — maize, tomatoes, beans, potatoes, and many others. Accuracy is best with a clear, well-lit photo of a single leaf.</p>
+          </details>
+          <details className="faq-item">
+            <summary>Do I need an account to use it?</summary>
+            <p>No — you can scan a leaf right away with no sign-up. Accounts and scan history are planned for a future update.</p>
+          </details>
+          <details className="faq-item">
+            <summary>Is my photo stored or shared?</summary>
+            <p>Your photo is sent securely to run the diagnosis and is not stored or shared beyond what's needed to generate your result.</p>
+          </details>
+          <details className="faq-item">
+            <summary>How do I get in touch?</summary>
+            <p>Use the contact form below, or reach out directly — we'd love to hear from you.</p>
+          </details>
         </div>
       </section>
 
@@ -468,6 +501,16 @@ html,body,#root{margin:0;background:var(--parchment);font-family:'Work Sans',san
 .team-card h3{font-family:'Roboto Slab',serif;font-size:17px;color:var(--ink);margin:0 0 4px;}
 .team-role{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.04em;color:var(--ochre);margin:0;}
 
+.faq{max-width:1100px;margin:0 auto;padding:10px 24px 64px;border-top:1px solid var(--line);padding-top:56px;}
+.faq h2{font-family:'Roboto Slab',serif;font-size:26px;color:var(--ink);margin:0 0 24px;}
+.faq-list{display:flex;flex-direction:column;gap:10px;max-width:600px;}
+.faq-item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;}
+.faq-item summary{font-family:'Roboto Slab',serif;font-weight:600;font-size:15px;color:var(--ink);cursor:pointer;list-style:none;}
+.faq-item summary::-webkit-details-marker{display:none;}
+.faq-item summary::before{content:'+';display:inline-block;width:16px;color:var(--leaf);font-weight:700;}
+.faq-item[open] summary::before{content:'–';}
+.faq-item p{font-size:13.5px;color:#4C5642;line-height:1.6;margin:10px 0 2px 16px;}
+
 .contact{max-width:1100px;margin:0 auto;padding:10px 24px 64px;border-top:1px solid var(--line);padding-top:56px;}
 .contact h2{font-family:'Roboto Slab',serif;font-size:26px;color:var(--ink);margin:0 0 10px;}
 .contact-lede{font-size:14px;color:#4C5642;margin:0 0 24px;max-width:44ch;}
@@ -479,3 +522,4 @@ html,body,#root{margin:0;background:var(--parchment);font-family:'Work Sans',san
 
 .footer{border-top:1px solid var(--line);padding:24px;display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center;color:#6B664F;font-size:12.5px;}
 `;
+          .
