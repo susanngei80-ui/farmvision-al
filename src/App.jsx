@@ -12,7 +12,7 @@ const STATUS_COLORS = {
 
 function LeafMark({ size = 28 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
+    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" role="img" aria-label="FarmVision AI leaf logo">
       <path d="M6 26C6 14 14 6 26 6C26 18 18 26 6 26Z" stroke="#2B3A22" strokeWidth="2" fill="#4A6B3A" />
       <path d="M7 25L23 9" stroke="#EFE9D8" strokeWidth="1.4" strokeLinecap="round" />
     </svg>
@@ -25,6 +25,9 @@ export default function App() {
   const [result, setResult] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
   const [dragActive, setDragActive] = useState(false);
+  const [contactName, setContactName] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactMessage, setContactMessage] = useState("");
   const fileInputRef = useRef(null);
 
   const handleFile = useCallback((file) => {
@@ -103,6 +106,17 @@ export default function App() {
     setErrorMsg("");
   };
 
+  const CONTACT_EMAIL = "hello@farmvisionai.example"; // TODO: replace with the real FarmVision AI email
+
+  const handleContactSubmit = (e) => {
+    e.preventDefault();
+    const subject = encodeURIComponent(`Message from ${contactName || "website visitor"}`);
+    const body = encodeURIComponent(
+      `Name: ${contactName}\nEmail: ${contactEmail}\n\n${contactMessage}`
+    );
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+  };
+
   return (
     <div>
       <style>{FONTS}{css}</style>
@@ -118,6 +132,7 @@ export default function App() {
             <a href="#how">How it works</a>
             <a href="#about">About</a>
             <a href="#team">Team</a>
+            <a href="#contact">Contact</a>
           </nav>
         </div>
       </header>
@@ -255,6 +270,7 @@ export default function App() {
           </div>
         </div>
       </section>
+
       <section className="how" id="how">
         <h2>How it works</h2>
         <div className="steps">
@@ -290,7 +306,6 @@ export default function App() {
           <span className="stat-label">average scan time</span>
         </div>
       </section>
-
       <section className="team" id="team">
         <h2>Team</h2>
         <div className="team-grid">
@@ -305,6 +320,49 @@ export default function App() {
             <p className="team-role">Co-Founder</p>
           </div>
         </div>
+      </section>
+
+      <section className="contact" id="contact">
+        <h2>Contact</h2>
+        <p className="contact-lede">Have a question or want to work with us? Send a message.</p>
+        <form className="contact-form" onSubmit={handleContactSubmit}>
+          <label className="contact-label">
+            Name
+            <input
+              type="text"
+              value={contactName}
+              onChange={(e) => setContactName(e.target.value)}
+              required
+              className="contact-input"
+              placeholder="Your name"
+            />
+          </label>
+          <label className="contact-label">
+            Email
+            <input
+              type="email"
+              value={contactEmail}
+              onChange={(e) => setContactEmail(e.target.value)}
+              required
+              className="contact-input"
+              placeholder="you@example.com"
+            />
+          </label>
+          <label className="contact-label">
+            Message
+            <textarea
+              value={contactMessage}
+              onChange={(e) => setContactMessage(e.target.value)}
+              required
+              className="contact-textarea"
+              placeholder="How can we help?"
+              rows={5}
+            />
+          </label>
+          <button type="submit" className="btn-primary">
+            Send message
+          </button>
+        </form>
       </section>
 
       <footer className="footer">
@@ -409,6 +467,15 @@ html,body,#root{margin:0;background:var(--parchment);font-family:'Work Sans',san
 .team-avatar{width:48px;height:48px;border-radius:50%;background:var(--leaf);color:#F4EFE0;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:14px;letter-spacing:0.04em;margin-bottom:14px;}
 .team-card h3{font-family:'Roboto Slab',serif;font-size:17px;color:var(--ink);margin:0 0 4px;}
 .team-role{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.04em;color:var(--ochre);margin:0;}
+
+.contact{max-width:1100px;margin:0 auto;padding:10px 24px 64px;border-top:1px solid var(--line);padding-top:56px;}
+.contact h2{font-family:'Roboto Slab',serif;font-size:26px;color:var(--ink);margin:0 0 10px;}
+.contact-lede{font-size:14px;color:#4C5642;margin:0 0 24px;max-width:44ch;}
+.contact-form{display:flex;flex-direction:column;gap:16px;max-width:440px;}
+.contact-label{display:flex;flex-direction:column;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.06em;color:#5B6650;text-transform:uppercase;}
+.contact-input,.contact-textarea{font-family:'Work Sans',sans-serif;font-size:14px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;resize:vertical;}
+.contact-input:focus,.contact-textarea:focus{outline:none;border-color:var(--leaf);}
+.contact-form .btn-primary{align-self:flex-start;}
 
 .footer{border-top:1px solid var(--line);padding:24px;display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center;color:#6B664F;font-size:12.5px;}
 `;
