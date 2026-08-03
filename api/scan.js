@@ -1,5 +1,5 @@
 // This runs on the server (Vercel), never in the browser.
-// Your ANTHROPIC_API_KEY stays here and is never exposed to visitors.
+// Your GEMINI_API_KEY stays here and is never exposed to visitors.
 
 // --- Very basic in-memory rate limiting ---
 // Good enough to stop casual abuse while you're small. It resets whenever
@@ -55,47 +55,43 @@ export default async function handler(req, res) {
     return;
   }
 
-  if (!process.env.ANTHROPIC_API_KEY) {
-    res.status(500).json({ error: "Server is missing an API key. Set ANTHROPIC_API_KEY in your deployment settings." });
+  if (!process.env.GEMINI_API_KEY) {
+    res.status(500).json({ error: "Server is missing an API key. Set GEMINI_API_KEY in your deployment settings." });
     return;
   }
 
   try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": process.env.ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-6",
-        max_tokens: 1000,
-        system: SYSTEM_PROMPT,
-        messages: [
-          {
-            role: "user",
-            content: [
-              {
-                type: "image",
-                source: { type: "base64", media_type: mediaType, data: base64 },
-              },
-              { type: "text", text: "Analyze this leaf photo and return the diagnostic JSON." },
-            ],
+    const model = "gemini-3.6-flash";
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                { text: SYSTEM_PROMPT + "\n\nAnalyze this leaf photo and return the diagnostic JSON." },
+                { inline_data: { mime_type: mediaType, data: base64 } },
+              ],
+            },
+          ],
+          generationConfig: {
+            response_mime_type: "application/json",
           },
-        ],
-      }),
-    });
+        }),
+      }
+    );
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error("Anthropic API error:", response.status, errText);
+      console.error("Gemini API error:", response.status, errText);
       res.status(502).json({ error: "The scan service is temporarily unavailable." });
       return;
     }
 
     const data = await response.json();
-    const text = (data.content || []).map((b) => b.text || "").join("").trim();
+    const text = data?.candidates?.[0]?.content?.parts?.map((p) => p.text || "").join("").trim() || "";
     const cleaned = text.replace(/```json|```/g, "").trim();
 
     let parsed;
