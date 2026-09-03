@@ -277,4 +277,130 @@ export default function App() {
         <div className="steps">
           <div className="step">
             <span className="step-num">01</span>
-            <h3>Capture</h3>
+            <h3>Capture</h3><p>Photograph a leaf in natural light — any crop, any season, any handheld camera.</p>
+          </div>
+          <div className="step">
+            <span className="step-num">02</span>
+            <h3>Scan</h3>
+            <p>The model reads texture, color, and lesion pattern against a trained field index.</p>
+          </div>
+          <div className="step">
+            <span className="step-num">03</span>
+            <h3>Report</h3>
+            <p>Get a plain-language diagnosis with a practical next step, in under ten seconds.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="about" id="about">
+        <h2>About FarmVision AI</h2>
+        <p>
+          FarmVision AI was built to put field-level crop diagnostics in the hands of smallholder
+          farmers. We combine AI image analysis with practical, local guidance — so a diagnosis
+          isn't just a label, it's a next step you can act on today.
+        </p>
+      </section>
+
+      <section className="team" id="team">
+        <h2>Team</h2>
+        <p>
+          FarmVision AI is built and run by a small team based in Kenya, working directly with
+          farmers to make sure the tool solves real problems, not imagined ones.
+        </p>
+      </section>
+
+      <section className="contact" id="contact">
+        <h2>Contact</h2>
+        <form className="contact-form" onSubmit={handleContactSubmit}>
+          <input
+            type="text"
+            placeholder="Your name"
+            value={contactName}
+            onChange={(e) => setContactName(e.target.value)}
+            required
+          />
+          <input
+            type="email"
+            placeholder="Your email"
+            value={contactEmail}
+            onChange={(e) => setContactEmail(e.target.value)}
+            required
+          />
+          <textarea
+            placeholder="Your message"
+            value={contactMessage}
+            onChange={(e) => setContactMessage(e.target.value)}
+            rows={4}
+            required
+          />
+          <button type="submit" className="btn-primary">Send message</button>
+        </form>
+      </section>
+
+      <section className="faq" id="faq">
+        <h2>FAQ</h2>
+        <div className="faq-item">
+          <h3>Does it work offline?</h3>
+          <p>Not yet — each scan needs an internet connection. Offline support is on our roadmap.</p>
+        </div>
+        <div className="faq-item">
+          <h3>Which crops are supported?</h3>
+          <p>We're starting with common Kenyan staple and horticultural crops, with more added regularly.</p>
+        </div>
+        <div className="faq-item">
+          <h3>Is it free to use?</h3>
+          <p>Yes, scanning is free while we're building out the platform.</p>
+        </div>
+      </section>
+
+      <footer className="footer">
+        <p>© {new Date().getFullYear()} FarmVision AI. Built in Kenya.</p>
+      </footer>
+    </div>
+  );
+}
+
+const css = `
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Work Sans', sans-serif; color: #2B3A22; background: #F7F4EA; }
+  h1, h2, h3 { font-family: 'Roboto Slab', serif; }
+  .nav { display: flex; justify-content: center; padding: 16px 24px; background: #EFE9D8; border-bottom: 1px solid #d8d2bd; }
+  .nav-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1100px; }
+  .wordmark { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 1.1rem; }
+  .nav-links { display: flex; gap: 20px; }
+  .nav-links a { color: #2B3A22; text-decoration: none; font-size: 0.95rem; }
+  .hero { padding: 40px 24px; max-width: 1100px; margin: 0 auto; }
+  .eyebrow { color: #4A6B3A; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.05em; }
+  .lede { color: #55503f; max-width: 60ch; }
+  .scanner { margin-top: 24px; }
+  .scanner-card { background: #fff; border: 1px solid #e0dcc9; border-radius: 16px; padding: 20px; max-width: 480px; }
+  .scanner-head { display: flex; align-items: center; gap: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: #7a765f; margin-bottom: 12px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #4A6B3A; }
+  .scanner-id { margin-left: auto; }
+  .dropzone { border: 2px dashed #cfc9b0; border-radius: 12px; padding: 24px; text-align: center; cursor: pointer; min-height: 180px; display: flex; align-items: center; justify-content: center; }
+  .dropzone.drag { border-color: #4A6B3A; background: #f2f0e2; }
+  .dz-title { font-weight: 600; margin: 8px 0 2px; }
+  .dz-sub { color: #7a765f; font-size: 0.85rem; margin: 0; }
+  .dz-image-wrap { position: relative; width: 100%; }
+  .dz-image { width: 100%; border-radius: 8px; display: block; }
+  .scanner-controls { display: flex; gap: 10px; margin-top: 14px; }
+  .btn-primary { background: #4A6B3A; color: #EFE9D8; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+  .btn-ghost { background: none; border: 1px solid #cfc9b0; padding: 10px 18px; border-radius: 8px; cursor: pointer; }
+  .err-text { color: #8C3B2A; margin-top: 10px; }
+  .report { margin-top: 16px; border-top: 1px solid #e0dcc9; padding-top: 16px; }
+  .report-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; }
+  .mono-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: #7a765f; }
+  .status-pill { padding: 4px 10px; border-radius: 20px; color: #fff; font-size: 0.75rem; font-weight: 600; }
+  .conf-bar { flex: 1; height: 6px; background: #eee; border-radius: 4px; margin: 0 10px; overflow: hidden; }
+  .conf-fill { height: 100%; background: #4A6B3A; }
+  .obs-list { margin: 10px 0; padding-left: 18px; }
+  .rec-box { background: #f2f0e2; border-radius: 8px; padding: 12px; margin-top: 12px; }
+  .how, .about, .team, .contact, .faq { max-width: 900px; margin: 0 auto; padding: 40px 24px; }
+  .steps { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 20px; }
+  .step { flex: 1; min-width: 200px; }
+  .step-num { font-family: 'IBM Plex Mono', monospace; color: #4A6B3A; font-weight: 600; }
+  .contact-form { display: flex; flex-direction: column; gap: 12px; max-width: 420px; }
+  .contact-form input, .contact-form textarea { padding: 10px; border: 1px solid #cfc9b0; border-radius: 8px; font-family: inherit; }
+  .faq-item { margin-bottom: 16px; }
+  .footer { text-align: center; padding: 24px; color: #7a765f; font-size: 0.85rem; border-top: 1px solid #e0dcc9; margin-top: 40px; }
+`;
