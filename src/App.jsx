@@ -36,20 +36,51 @@ export default function App() {
       setStatus("error");
       return;
     }
-    const reader = new FileReader();
-    reader.onload = () => {
-      const dataUrl = reader.result;
+  const handleFile = useCallback((file) => {
+    if (!file || !file.type.startsWith("image/")) {
+      setErrorMsg("That file doesn't look like an image. Try a JPG or PNG of a leaf.");
+      setStatus("error");
+      return;
+    }
+
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
+
+    img.onload = () => {
+      const MAX_DIM = 1024;
+      let { width, height } = img;
+
+      if (width > height && width > MAX_DIM) {
+        height = Math.round((height * MAX_DIM) / width);
+        width = MAX_DIM;
+      } else if (height > MAX_DIM) {
+        width = Math.round((width * MAX_DIM) / height);
+        height = MAX_DIM;
+      }
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, width, height);
+
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.8);
       const base64 = dataUrl.split(",")[1];
-      setImageData({ dataUrl, mediaType: file.type, base64 });
+
+      setImageData({ dataUrl, mediaType: "image/jpeg", base64 });
       setResult(null);
       setStatus("idle");
       setErrorMsg("");
+      URL.revokeObjectURL(objectUrl);
     };
-    reader.onerror = () => {
+
+    img.onerror = () => {
       setErrorMsg("Couldn't read that file. Please try again.");
       setStatus("error");
+      URL.revokeObjectURL(objectUrl);
     };
-    reader.readAsDataURL(file);
+
+    img.src = objectUrl;
   }, []);
 
   const onDrop = useCallback(
