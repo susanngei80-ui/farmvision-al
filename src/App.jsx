@@ -36,12 +36,6 @@ export default function App() {
       setStatus("error");
       return;
     }
-  const handleFile = useCallback((file) => {
-    if (!file || !file.type.startsWith("image/")) {
-      setErrorMsg("That file doesn't look like an image. Try a JPG or PNG of a leaf.");
-      setStatus("error");
-      return;
-    }
 
     const img = new Image();
     const objectUrl = URL.createObjectURL(file);
