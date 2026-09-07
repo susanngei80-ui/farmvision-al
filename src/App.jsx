@@ -135,6 +135,40 @@ export default function App() {
   };
 
   const CONTACT_EMAIL = "farmvisional@gmail.com";
+  const sendChatMessage = useCallback(async () => {
+    const trimmed = chatInput.trim();
+    if (!trimmed || chatLoading) return;
+
+    const newMessages = [...chatMessages, { role: "user", text: trimmed }];
+    setChatMessages(newMessages);
+    setChatInput("");
+    setChatLoading(true);
+
+    try {
+      const contextNote = result
+        ? `Recent scan result — Crop: ${result.crop}, Condition: ${result.condition}, Status: ${result.status}.`
+        : "";
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: contextNote ? `${contextNote}\n\nQuestion: ${trimmed}` : trimmed,
+          history: newMessages.slice(-8),
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data?.error || "Chat request failed");
+      setChatMessages((prev) => [...prev, { role: "assistant", text: data.reply }]);
+    } catch (err) {
+      console.error(err);
+      setChatMessages((prev) => [
+        ...prev,
+        { role: "assistant", text: "Sorry, I couldn't respond right now. Please try again." },
+      ]);
+    } finally {
+      setChatLoading(false);
+    }
+  }, [chatInput, chatLoading, chatMessages, result]);
 
   const handleContactSubmit = (e) => {
     e.preventDefault();
