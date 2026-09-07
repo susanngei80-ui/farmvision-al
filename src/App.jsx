@@ -494,4 +494,15 @@ const css = `
   .contact-form input, .contact-form textarea { padding: 10px; border: 1px solid #cfc9b0; border-radius: 8px; font-family: inherit; }
   .faq-item { margin-bottom: 16px; }
   .footer { text-align: center; padding: 24px; color: #7a765f; font-size: 0.85rem; border-top: 1px solid #e0dcc9; margin-top: 40px; }
+  .chatbox { max-width: 900px; margin: 0 auto; padding: 40px 24px; }
+  .chat-sub { color: #7a765f; margin-top: -8px; }
+  .chat-window { border: 1px solid #e0dcc9; border-radius: 12px; background: #fff; overflow: hidden; margin-top: 16px; }
+  .chat-messages { max-height: 320px; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .chat-empty { color: #7a765f; font-size: 0.9rem; }
+  .chat-bubble { padding: 10px 14px; border-radius: 12px; max-width: 80%; font-size: 0.95rem; line-height: 1.4; }
+  .chat-bubble.user { align-self: flex-end; background: #4A6B3A; color: #EFE9D8; }
+  .chat-bubble.assistant { align-self: flex-start; background: #f2f0e2; color: #2B3A22; }
+  .chat-typing { opacity: 0.6; font-style: italic; }
+  .chat-input-row { display: flex; gap: 8px; padding: 12px; border-top: 1px solid #e0dcc9; }
+  .chat-input-row input { flex: 1; padding: 10px; border: 1px solid #cfc9b0; border-radius: 8px; font-family: inherit; }
 `;
