@@ -416,6 +416,35 @@ export default function App() {
       </section>
 
       <footer className="footer">
+        <section className="chatbox" id="chatbox">
+        <h2>Ask FarmVision AI</h2>
+        <p className="chat-sub">Ask about crop problems, or ask about your last scan result.</p>
+        <div className="chat-window">
+          <div className="chat-messages">
+            {chatMessages.length === 0 && (
+              <p className="chat-empty">Try asking: "Why are my tomato leaves curling?"</p>
+            )}
+            {chatMessages.map((m, i) => (
+              <div key={i} className={`chat-bubble ${m.role}`}>
+                {m.text}
+              </div>
+            ))}
+            {chatLoading && <div className="chat-bubble assistant chat-typing">Typing…</div>}
+          </div>
+          <div className="chat-input-row">
+            <input
+              type="text"
+              placeholder="Type your question…"
+              value={chatInput}
+              onChange={(e) => setChatInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && sendChatMessage()}
+            />
+            <button className="btn-primary" onClick={sendChatMessage} disabled={chatLoading}>
+              Send
+            </button>
+          </div>
+        </div>
+      </section>
         <p>© {new Date().getFullYear()} FarmVision AI. Built in Kenya.</p>
       </footer>
     </div>
