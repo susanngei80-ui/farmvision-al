@@ -29,6 +29,59 @@ export default function App() {
   const [dragActive, setDragActive] = useState(false);
   const [contactName, setContactName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
+  useEffect(() => {
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
+        size: "invisible",
+      });
+    }
+  }, []);
+
+  const sendOtp = useCallback(async () => {
+    setAuthError("");
+    const cleaned = phoneNumber.trim();
+    if (!cleaned.startsWith("+")) {
+      setAuthError("Please include your country code, e.g. +254...");
+      return;
+    }
+    try {
+      const result = await signInWithPhoneNumber(auth, cleaned, window.recaptchaVerifier);
+      setConfirmationResult(result);
+      setAuthStep("otp");
+    } catch (err) {
+      console.error(err);
+      setAuthError("Couldn't send code. Check the number and try again.");
+    }
+  }, [phoneNumber]);
+
+  const verifyOtp = useCallback(async () => {
+    setAuthError("");
+    if (!confirmationResult) return;
+    try {
+      const result = await confirmationResult.confirm(otp.trim());
+      setUser(result.user);
+      setAuthStep("done");
+    } catch (err) {
+      console.error(err);
+      setAuthError("Incorrect code. Please try again.");
+    }
+  }, [confirmationResult, otp]);
+
+  const signOutUser = useCallback(() => {
+    auth.signOut();
+    setUser(null);
+    setAuthStep("phone");
+    setPhoneNumber("");
+    setOtp("");
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((u) => {
+      setUser(u);
+      if (u) setAuthStep("done");
+    });
+    return () => unsubscribe();
+  }, []);
   const [contactMessage, setContactMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
   const [chatInput, setChatInput] = useState("");
@@ -177,6 +230,7 @@ export default function App() {
       setChatLoading(false);
     }
   }, [chatInput, chatLoading, chatMessages, result]);
+  const CONTACT_EMAIL = "farmvisional@gmail.com";
 
   const handleContactSubmit = (e) => {
     e.preventDefault();
